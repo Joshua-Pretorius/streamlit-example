@@ -25,30 +25,26 @@ st.plotly_chart(fig1, theme = 'streamlit')
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 import folium
 
 # Load airports and routes data
 airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat',
-                       header=None, names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
+                          header=None, names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
 routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
-                     header=None, names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
+                        header=None, names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
+
+# Replace missing values in latitude and longitude columns with 0
+airports['latitude'] = airports['latitude'].replace('\\N', 0)
+airports['longitude'] = airports['longitude'].replace('\\N', 0)
+
+# Convert latitude and longitude columns to float
+airports[['latitude', 'longitude']] = airports[['latitude', 'longitude']].astype(float)
+
+# Create a dataframe of airport locations
+airport_locs = airports[['iata', 'latitude', 'longitude']]
 
 # Create a list of unique airline names for dropdown menu
 airline_names = sorted(routes['airline'].unique())
-
-# Replace missing values with 0
-airports[['latitude', 'longitude']] = airports[['latitude', 'longitude']].replace('\\N', 0)
-
-# Convert columns to float
-airports[['latitude', 'longitude']] = airports[['latitude', 'longitude']].astype(float)
-
-# Create a list of airports with latitude and longitude
-airport_locs = airports[['iata', 'latitude', 'longitude']]
-
-# Concatenate routes with source and destination latitude and longitude
-routes = pd.concat([routes.merge(airport_locs, left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest')),
-                    routes.merge(airport_locs, left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest'))])
 
 # Create a map centered at 0, 0 coordinates
 m = folium.Map(location=[0, 0], zoom_start=2)
@@ -61,11 +57,18 @@ for _, row in airports.iterrows():
 selected_airline = st.sidebar.selectbox('Select airline', airline_names)
 selected_routes = routes[routes['airline'] == selected_airline]
 
+# Merge route data with airport locations
+selected_routes = pd.concat([selected_routes.merge(airport_locs, left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest')),
+                             selected_routes.merge(airport_locs, left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest'))],
+                            axis=1)
+
+# Add flight routes to map
 for _, row in selected_routes.iterrows():
     folium.PolyLine(locations=[[row['latitude_source'], row['longitude_source']], [row['latitude_dest'], row['longitude_dest']]], color='blue').add_to(m)
 
 # Display the map
 st.markdown(folium.Map().get_root().render(), unsafe_allow_html=True)
+
 
 
 
