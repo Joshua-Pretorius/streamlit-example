@@ -24,19 +24,20 @@ fig1 = px.bar(airline_counts, x="Country", y="Count", color="Country", title="Ai
 st.plotly_chart(fig1, theme = 'streamlit')
 
 ##MAP1
-# Load airports and routes data
+import streamlit as st
+import pandas as pd
+import numpy as np
 import folium
-from folium.plugins import MarkerCluster
 
+# Load airports and routes data
 airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat',
                           header=None, names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
 routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
                         header=None, names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
 
-# Convert 'iata' columns to string data type
-airports['iata'] = airports['iata'].astype(str)
-routes['source'] = routes['source'].astype(str)
-routes['dest'] = routes['dest'].astype(str)
+# Filter out missing values in the latitude and longitude columns
+airports = airports[airports['latitude'] != '\\N']
+airports = airports[airports['longitude'] != '\\N']
 
 # Merge airport data to get latitude and longitude for each airport
 routes = pd.merge(routes, airports[['iata', 'latitude', 'longitude']], left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest'))
@@ -50,7 +51,7 @@ m = folium.Map(location=[0, 0], zoom_start=2)
 
 # Add markers for each airport
 for _, row in airports.iterrows():
-    folium.Marker(location=[row['latitude'], row['longitude']], popup=row['name']).add_to(m)
+    folium.Marker(location=[float(row['latitude']), float(row['longitude'])], popup=row['name']).add_to(m)
 
 # Add flight routes for the selected airline
 selected_airline = st.sidebar.selectbox('Select airline', airline_names)
@@ -61,5 +62,4 @@ for _, row in selected_routes.iterrows():
 
 # Display the map
 st.markdown(folium.Map().get_root().render(), unsafe_allow_html=True)
-
 
