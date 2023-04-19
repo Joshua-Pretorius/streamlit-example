@@ -31,28 +31,25 @@ import folium
 # Load airports and routes data
 airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat',
                        header=None,
-                       names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
+                       names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude',
+                              'timezone', 'dst', 'tz'],
+                       na_values='\\N')
 
 routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
                      header=None,
-                     names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
+                     names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops',
+                            'equipment'])
 
-# Drop null values and convert columns to float
-airports = airports.dropna(subset=['latitude', 'longitude'])
-airports[['latitude', 'longitude']] = airports[['latitude', 'longitude']].astype(float)
+# Replace missing values with NaN and convert to float
+airports['latitude'] = pd.to_numeric(airports['latitude'], errors='coerce')
+airports['longitude'] = pd.to_numeric(airports['longitude'], errors='coerce')
 
-routes = routes.dropna(subset=['source', 'dest'])
-routes[['source', 'dest']] = routes[['source', 'dest']].astype(str)
-
+# Concatenate the airport latitude and longitude columns into a new dataframe
+airport_coords = pd.concat([airports['iata'], airports[['latitude', 'longitude']].astype(float)], axis=1)
 
 # Merge airport data to get latitude and longitude for each airport
-source_airports = airports[['iata', 'latitude', 'longitude']]
-dest_airports = airports[['iata', 'latitude', 'longitude']]
-routes = pd.concat([pd.merge(routes[['airline', 'source', 'dest']], source_airports, left_on='source', right_on='iata', how='left'), 
-                    pd.merge(routes[['airline', 'source', 'dest']], dest_airports, left_on='dest', right_on='iata', how='left')], 
-                   ignore_index=True)
-
-
+routes = pd.merge(routes, airport_coords, left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest'))
+routes = pd.merge(routes, airport_coords, left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest'))
 
 # Create a list of unique airline names for dropdown menu
 airline_names = sorted(routes['airline'].unique())
@@ -69,10 +66,12 @@ selected_airline = st.sidebar.selectbox('Select airline', airline_names)
 selected_routes = routes[routes['airline'] == selected_airline]
 
 for _, row in selected_routes.iterrows():
-    folium.PolyLine(locations=[[row['latitude'][0], row['longitude'][0]], [row['latitude'][1], row['longitude'][1]]], color='blue').add_to(m)
+    folium.PolyLine(locations=[[row['latitude_source'], row['longitude_source']],
+                               [row['latitude_dest'], row['longitude_dest']]], color='blue').add_to(m)
 
 # Display the map
 st.markdown(folium.Map().get_root().render(), unsafe_allow_html=True)
+
 
 
 
