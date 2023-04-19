@@ -23,6 +23,40 @@ airline_counts = airlines.groupby("Country").size().reset_index(name="Count")
 fig1 = px.bar(airline_counts, x="Country", y="Count", color="Country", title="Airline Count by Country")
 st.plotly_chart(fig1, theme = 'streamlit')
 
+##MAP
+import streamlit as st
+import pandas as pd
+import folium
+
+# Load routes data
+routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
+                        header=None, names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
+
+# Merge airport data to get latitude and longitude for each airport
+airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat',
+                          header=None, names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
+routes = pd.merge(routes, airports[['iata', 'latitude', 'longitude']], left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest'))
+routes = pd.merge(routes, airports[['iata', 'latitude', 'longitude']], left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest'))
+
+# Create a map centered at (0, 0)
+m = folium.Map(location=[0, 0], zoom_start=2)
+
+# Add all flight routes as lines on the map
+for index, row in routes.iterrows():
+    source = (row['latitude_source'], row['longitude_source'])
+    dest = (row['latitude_dest'], row['longitude_dest'])
+    folium.PolyLine(locations=[source, dest], color='red', weight=1).add_to(m)
+
+# Display the map on Streamlit
+st.write(m)
+
+
+
+
+
+
+
+
 import pandas as pd
 import folium
 import streamlit as st
