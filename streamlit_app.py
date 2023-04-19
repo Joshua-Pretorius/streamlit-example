@@ -35,13 +35,13 @@ airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/m
 routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
                         header=None, names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
 
-# Filter out missing values in the latitude and longitude columns
-airports = airports[airports['latitude'] != '\\N']
-airports = airports[airports['longitude'] != '\\N']
-
 # Merge airport data to get latitude and longitude for each airport
-routes = pd.merge(routes, airports[['iata', 'latitude', 'longitude']], left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest'))
-routes = pd.merge(routes, airports[['iata', 'latitude', 'longitude']], left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest'))
+airports = airports[['iata', 'latitude', 'longitude']].dropna()
+airports['latitude'] = airports['latitude'].astype(float)
+airports['longitude'] = airports['longitude'].astype(float)
+
+routes = pd.merge(routes, airports, left_on='source', right_on='iata', how='left', suffixes=('_source', '_dest')).dropna()
+routes = pd.merge(routes, airports, left_on='dest', right_on='iata', how='left', suffixes=('_source', '_dest')).dropna()
 
 # Create a list of unique airline names for dropdown menu
 airline_names = sorted(routes['airline'].unique())
@@ -51,7 +51,7 @@ m = folium.Map(location=[0, 0], zoom_start=2)
 
 # Add markers for each airport
 for _, row in airports.iterrows():
-    folium.Marker(location=[float(row['latitude']), float(row['longitude'])], popup=row['name']).add_to(m)
+    folium.Marker(location=[row['latitude'], row['longitude']], popup=row['name']).add_to(m)
 
 # Add flight routes for the selected airline
 selected_airline = st.sidebar.selectbox('Select airline', airline_names)
@@ -62,4 +62,5 @@ for _, row in selected_routes.iterrows():
 
 # Display the map
 st.markdown(folium.Map().get_root().render(), unsafe_allow_html=True)
+
 
