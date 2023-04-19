@@ -18,5 +18,24 @@ planes.columns = plane_col
 routes = pd.read_csv('routes.dat', header=None)
 route_col = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
 routes.columns = route_col
-#J-Drop uneccesary columns in the routes table
-routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
+
+# r print columns
+print(airlines.columns)
+print(airports.columns)
+print(countries.columns)
+print(routes.columns)
+
+## r Clean data - Airlines
+#drop coloumns
+airlines = airlines.drop(['Alias', 'IATA', 'ICAO', 'Callsign'], axis = 1)
+
+#Drop all non active airlines
+mask = airlines['Active'] == 'Y'
+airlines = airlines[mask]
+
+# remove first row
+airlines.drop(0)
+
+## r Clean Data Countries
+#drop columns
+countries = countries.drop(['DAFIF Code'], axis = 1)
