@@ -18,3 +18,5 @@ planes.columns = plane_col
 routes = pd.read_csv('routes.dat', header=None)
 route_col = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
 routes.columns = route_col
+#J-Drop uneccesary columns in the routes table
+routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
