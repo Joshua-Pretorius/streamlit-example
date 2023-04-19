@@ -6,6 +6,8 @@ airlines.columns = airline_col
 airports = pd.read_csv('airports.dat', header=None)
 airport_col = ['Airport ID', 'Name', 'City', 'Country', 'IATA', 'ICAO', 'Latitude', 'Longitude', 'Altitude', 'Timezone', 'DST', 'Tz database time zone', 'Type', 'Source']
 airports.columns = airport_col
+#J-Drop uneccesary columns in the airports table
+airports = airports.drop(['DST','Tz database time zone','Type','Source','Timezone'], axis=1)
 
 countries = pd.read_csv('countries.dat', header=None)
 country_col = ['Name', 'ISO Code', 'DAFIF Code']
