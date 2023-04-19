@@ -25,6 +25,9 @@ st.plotly_chart(fig1, theme = 'streamlit')
 
 ##MAP1
 # Load airports and routes data
+import folium
+from folium.plugins import MarkerCluster
+
 airports = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat',
                           header=None, names=['airport_id', 'name', 'city', 'country', 'iata', 'icao', 'latitude', 'longitude', 'altitude', 'timezone', 'dst', 'tz'])
 routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat',
