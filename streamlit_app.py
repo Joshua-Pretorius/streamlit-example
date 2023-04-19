@@ -28,13 +28,13 @@ import pandas as pd
 import folium
 
 # Replace missing values with NaN
-airport_locs = airports[['iata', 'latitude', 'longitude']]
-airport_locs['lat'] = airport_locs['lat'].replace('\\N', np.nan).astype(float)
-airport_locs['long'] = airport_locs['long'].replace('\\N', np.nan).astype(float)
+airport_locs = airports[['IATA', 'Latitude', 'Longitude']]
+airport_locs['Latitude'] = airport_locs['Latitude'].replace('\\N', np.nan).astype(float)
+airport_locs['Longitude'] = airport_locs['Longitude'].replace('\\N', np.nan).astype(float)
 
 # Merge dataframes using pd.concat
-routes = pd.concat([routes, airport_locs.rename(columns={'iata': 'source'})[['source', 'lat', 'long']]], axis=1)
-selected_routes = routes[(routes['source'] == selected_airport) & (routes['dest'] != selected_airport)]
+routes = pd.concat([routes, airport_locs.rename(columns={'IATA': 'Source airport'})[['Source airport', 'Latitude', 'Longitude']]], axis=1)
+selected_routes = routes[(routes['Source airport'] == selected_airport) & (routes['Destination airport'] != selected_airport)]
 
 # Drop rows with NaN values
 selected_routes = selected_routes.dropna()
