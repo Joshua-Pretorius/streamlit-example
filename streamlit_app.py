@@ -26,6 +26,7 @@ st.plotly_chart(fig1, theme = 'streamlit')
 import streamlit as st
 import pandas as pd
 import folium
+import numpy as np
 
 # Replace missing values with NaN
 airport_locs = airports[['IATA', 'Latitude', 'Longitude']]
