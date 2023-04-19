@@ -2,6 +2,7 @@ from collections import namedtuple
 import altair as alt
 import math
 import pandas as pd
+import plotly_express
 import streamlit as st
 
 airlines = pd.read_csv("https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat",
@@ -14,3 +15,10 @@ routes = pd.read_csv("https://raw.githubusercontent.com/jpatokal/openflights/mas
 # create the web application using streamlit
 st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide")
 st.title("OpenFlights Dashboard")
+
+st.header("Airline Data")
+st.write(airlines)
+st.subheader("Airline Count by Country")
+airline_counts = airlines.groupby("Country").size().reset_index(name="Count")
+fig1 = px.bar(airline_counts, x="Country", y="Count", color="Country", title="Airline Count by Country")
+st.plotly_chart(fig1)
