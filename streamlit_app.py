@@ -37,6 +37,14 @@ routes = pd.read_csv('https://raw.githubusercontent.com/jpatokal/openflights/mas
                      header=None,
                      names=['airline', 'airline_id', 'source', 'source_id', 'dest', 'dest_id', 'codeshare', 'stops', 'equipment'])
 
+# Drop null values and convert columns to float
+airports = airports.dropna(subset=['latitude', 'longitude'])
+airports[['latitude', 'longitude']] = airports[['latitude', 'longitude']].astype(float)
+
+routes = routes.dropna(subset=['source', 'dest'])
+routes[['source', 'dest']] = routes[['source', 'dest']].astype(str)
+
+
 # Merge airport data to get latitude and longitude for each airport
 source_airports = airports[['iata', 'latitude', 'longitude']]
 dest_airports = airports[['iata', 'latitude', 'longitude']]
@@ -44,8 +52,7 @@ routes = pd.concat([pd.merge(routes[['airline', 'source', 'dest']], source_airpo
                     pd.merge(routes[['airline', 'source', 'dest']], dest_airports, left_on='dest', right_on='iata', how='left')], 
                    ignore_index=True)
 
-# Drop null values
-routes = routes.dropna(subset=['latitude', 'longitude'])
+
 
 # Create a list of unique airline names for dropdown menu
 airline_names = sorted(routes['airline'].unique())
