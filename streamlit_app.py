@@ -28,6 +28,7 @@ import pandas as pd
 import folium
 
 # Replace missing values with NaN
+airport_locs = airports[['iata', 'latitude', 'longitude']]
 airport_locs['lat'] = airport_locs['lat'].replace('\\N', np.nan).astype(float)
 airport_locs['long'] = airport_locs['long'].replace('\\N', np.nan).astype(float)
 
