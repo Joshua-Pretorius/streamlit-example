@@ -13,8 +13,15 @@ routes = pd.read_csv("https://raw.githubusercontent.com/jpatokal/openflights/mas
                      header=None, names=["Airline", "Airline ID", "Source airport", "Source airport ID", "Destination airport", "Destination airport ID", "Codeshare", "Stops", "Equipment"])
 
 # create the web application using streamlit
-st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide")
+st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide", initial_sidebar_state = 'expanded')
+
+##style - Custom styles from styles.css
+with open ('style.css') as f:
+  st.markdown(f'<style>{f.read()}</styles', unsafe_allow_html = True)
+#Set titles and subheadings
 st.title("OpenFlights Dashboard")
+#Sidebar
+st.sidebar.hearder('Testing..1,2')
 
 st.header("Airline Data")
 st.write(airlines)
@@ -68,6 +75,8 @@ st.dataframe(selected_routes[['Source airport', 'Destination airport', 'Airline'
 
 
 
+
+### CHART _ 
 
 
 
