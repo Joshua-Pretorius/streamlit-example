@@ -32,6 +32,11 @@ import numpy as np
 # Define a Streamlit text input widget
 selected_airport = st.text_input('Select an airport:', 'LHR')
 
+# Replace missing values with NaN
+airport_locs = airports[['IATA', 'Latitude', 'Longitude']]
+airport_locs['Latitude'] = airport_locs['Latitude'].replace('\\N', np.nan).astype(float)
+airport_locs['Longitude'] = airport_locs['Longitude'].replace('\\N', np.nan).astype(float)
+
 # Merge dataframes using pd.concat
 routes = pd.concat([routes, airport_locs.rename(columns={'IATA': 'Source airport'})[['Source airport', 'Latitude', 'Longitude']]], axis=1)
 selected_routes = routes[(routes['Source airport'] == selected_airport) & (routes['Destination airport'] != selected_airport)]
