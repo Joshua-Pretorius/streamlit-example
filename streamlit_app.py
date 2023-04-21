@@ -157,7 +157,7 @@ plot_airports(routes)
 
 
     # Add the route feature group to the map
-    route_fg.add_to(m)
+route_fg.add_to(m)
 
     # Add markers for the source and destination airports
     source_airport = routes.iloc[0]['Name_x']
