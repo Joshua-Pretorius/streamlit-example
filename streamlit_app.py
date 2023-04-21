@@ -146,12 +146,18 @@ def plot_routes(routes, source_filter, dest_filter):
 
     # Display the route information in a table
     st.write(routes)
-
+    
+# sidebar title
+st.sidebar.title('Travel Routes')
 # Create dropdown menus to select the source and destination airports
+st.sidebar.subheader('From:')
 source_list = routes['Name_x'].unique().tolist()
 source_filter = st.sidebar.selectbox('Select source airport:', source_list)
+st.sidebar.subheader('Destination:')
 dest_list = routes['Name_y'][routes['Name_x'] == source_filter].unique().tolist()
 dest_filter = st.sidebar.selectbox('Select destination airport:', dest_list)
+
+
 
 # Plot the routes between the selected airports on the map
 plot_routes(routes, source_filter, dest_filter)
@@ -161,9 +167,7 @@ folium_static(m)
 
 
 
-# Create dropdown boxes
-#source_airport = st.selectbox('From:', join['Source airport'].unique())
-#destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == source_airport]['Destination airport'].unique())
+
 
 
 
