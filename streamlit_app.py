@@ -109,10 +109,4 @@ destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == sou
 
 
 
-### CHART _ 
-
-
-
-
-
 
