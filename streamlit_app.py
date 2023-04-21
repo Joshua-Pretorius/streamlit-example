@@ -188,7 +188,7 @@ c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 distance = R * c
 
 # Display the distance between the selected airports
-st.write(f"The distance between {source_filter} and {dest_filter} is {distance:.2f} kilometers.")
+st.write(f"The distance between {source_filter} and {dest_filter} is {distance:.2f} kilometers. and {source_coords} and {dest_coords}")
 
 
 
