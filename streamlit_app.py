@@ -112,7 +112,7 @@ join['Source airport ID'] = join['Source airport ID'].astype(str)
 join['Destination airport ID'] = join['Destination airport ID'].astype(str)
 routes = join.dropna()
 
-reate a map centered on the first route's source airport
+#Create a map centered on the first route's source airport
 m = folium.Map(location=[routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']], zoom_start=3)
 
 # Define a function to plot the routes on the map
