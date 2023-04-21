@@ -98,47 +98,9 @@ join['Source Longitude'] = join['Source Longitude'].dropna().astype(float)
 join['Destination Latitude'] = join['Destination Latitude'].dropna().astype(float)
 join['Destination Longitude'] = join['Destination Longitude'].dropna().astype(float)
 # Load the joined table
-routes = join.dropna()
+join = join.dropna()
 
-# Create a map centered on the first route's source airport
-m = folium.Map(location=[routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']], zoom_start=3)
 
-# Define a function to plot the routes on the map
-def plot_routes(routes, airline_filter=None):
-    # Filter the routes by airline if an airline filter is provided
-    if airline_filter:
-        routes = routes[routes['Airline'] == airline_filter]
-    
-    # Create a feature group for the routes
-    route_fg = folium.FeatureGroup(name='Routes')
-
-    # Loop through the routes and plot them on the map
-    for index, row in routes.iterrows():
-        # Get the source and destination coordinates
-        source_coords = [row['Source Latitude'], row['Source Longitude']]
-        dest_coords = [row['Destination Latitude'], row['Destination Longitude']]
-
-        # Create a polyline connecting the source and destination airports
-        route_line = folium.PolyLine(locations=[source_coords, dest_coords], color='blue', weight=2, opacity=0.7, smooth_factor=1)
-        route_line.add_to(route_fg)
-
-    # Add the route feature group to the map
-    route_fg.add_to(m)
-
-    # Add a layer control to the map
-    folium.LayerControl().add_to(m)
-
-# Add a dropdown menu to filter routes by airline
-airline_list = routes['Airline ID'].unique().tolist()
-airline_filter = st.sidebar.selectbox('Filter by airline:', ['All'] + airline_list)
-if airline_filter == 'All':
-    airline_filter = None
-
-# Plot the routes on the map
-plot_routes(routes, airline_filter)
-
-# Display the map in Streamlit
-st_data = st_folium(m, width = 725)
 
 
 
