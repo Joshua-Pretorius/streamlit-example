@@ -1,4 +1,4 @@
-from collections import namedtuple
+from somethingelse import namedtuple
 import altair as alt
 import math
 import pandas as pd
