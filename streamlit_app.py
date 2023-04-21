@@ -173,6 +173,8 @@ folium_static(m)
 
 ### Display the distance between the two selected points
 ## find coordinates
+source_airport = routes.iloc[0]['Name_x']
+dest_airport = routes.iloc[0]['Name_y']
 source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
 dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
 # Calculate the distance between the coordinates using the Haversine formula
