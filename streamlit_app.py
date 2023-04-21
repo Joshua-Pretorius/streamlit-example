@@ -120,7 +120,7 @@ m = folium.Map(location=[routes.iloc[0]['Source Latitude'], routes.iloc[0]['Sour
 # Define a function to plot the routes on the map
 def plot_routes(routes, source_filter, dest_filter):
     # Filter the routes by source and destination airports
-    routes = routes[(routes['Source airport ID'] == source_filter) & (routes['Destination airport ID'] == dest_filter)]
+    routes = routes[(routes['Name_x'] == source_filter) & (routes['Name_y'] == dest_filter)]
     
     # Create a feature group for the routes
     route_fg = folium.FeatureGroup(name='Routes')
