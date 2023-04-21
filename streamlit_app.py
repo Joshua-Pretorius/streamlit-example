@@ -132,6 +132,29 @@ def plot_routes(routes, source_filter, dest_filter):
         # Create a polyline connecting the source and destination airports
         route_line = folium.PolyLine(locations=[source_coords, dest_coords], color='blue', weight=2, opacity=0.7, smooth_factor=1)
         route_line.add_to(route_fg)
+        
+    # Define a function to plot the airport markers on the map
+def plot_airports(routes):
+    # Create a feature group for the airports
+    airport_fg = folium.FeatureGroup(name='Airports')
+
+    # Loop through the airports and add markers to the feature group
+    for index, row in routes.iterrows():
+        # Get the airport coordinates and name
+        airport_coords = [row['Latitude'], row['Longitude']]
+        airport_name = row['Name']
+
+        # Add a plane icon for the airport
+        icon_plane = folium.features.CustomIcon('https://img.icons8.com/emoji/48/000000/airplane-emoji.png', icon_size=(30, 30))
+        marker = folium.Marker(location=airport_coords, icon=icon_plane, tooltip=airport_name)
+        marker.add_to(airport_fg)
+
+    # Add the airport feature group to the map
+    airport_fg.add_to(m)
+
+# Plot the airport markers on the map
+plot_airports(routes)
+
 
     # Add the route feature group to the map
     route_fg.add_to(m)
