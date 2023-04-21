@@ -168,6 +168,24 @@ plot_routes(routes, source_filter, dest_filter)
 # Display the map in Streamlit
 folium_static(m)
 
+### Display the distance between the two selected points
+
+# Get the selected airports' coordinates
+source_coords = join.loc[join['Source airport'] == source_airport][['Source Latitude', 'Source Longitude']].iloc[0]
+dest_coords = join.loc[(join['Source airport'] == source_airport) & (join['Destination airport'] == destination_airport)][['Destination Latitude', 'Destination Longitude']].iloc[0]
+
+# Calculate the distance between the coordinates using the Haversine formula
+lat1, lon1 = source_coords
+lat2, lon2 = dest_coords
+R = 6371  # radius of the Earth in kilometers
+dlat = math.radians(lat2 - lat1)
+dlon = math.radians(lon2 - lon1)
+a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+distance = R * c
+
+# Display the distance between the selected airports
+st.write(f"The distance between {source_airport} and {destination_airport} is {distance:.2f} kilometers.")
 
 
 
