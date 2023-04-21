@@ -152,7 +152,7 @@ def plot_routes(routes, source_filter, dest_filter):
     m.fit_bounds(bounds)
 
     # Display the route information in a table
-    table_data = routes[['Airline Name', 'Name_x', 'Name_y', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']]
+    table_data = routes[['Airline', 'Name_x', 'Name_y', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']]
     table_data.columns = ['Airline', 'Source Airport', 'Destination Airport', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']
     st.write(table_data)
 
