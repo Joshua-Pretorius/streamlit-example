@@ -101,8 +101,7 @@ join['Destination Latitude'] = join['Destination Latitude'].dropna().astype(floa
 join['Destination Longitude'] = join['Destination Longitude'].dropna().astype(float)
 # Load the joined table
 join = join.dropna()
-
-###New map
+##New map
 import pandas as pd
 import folium
 from streamlit_folium import folium_static
@@ -137,6 +136,14 @@ def plot_routes(routes, source_filter, dest_filter):
     # Add the route feature group to the map
     route_fg.add_to(m)
 
+    # Add markers for the source and destination airports
+    source_airport = routes.iloc[0]['Name_x']
+    dest_airport = routes.iloc[0]['Name_y']
+    source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
+    dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
+    folium.Marker(location=source_coords, tooltip=source_airport).add_to(m)
+    folium.Marker(location=dest_coords, tooltip=dest_airport).add_to(m)
+
     # Add a layer control to the map
     folium.LayerControl().add_to(m)
 
@@ -145,7 +152,9 @@ def plot_routes(routes, source_filter, dest_filter):
     m.fit_bounds(bounds)
 
     # Display the route information in a table
-    st.write(routes)
+    table_data = routes[['Airline Name', 'Name_x', 'Name_y', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']]
+    table_data.columns = ['Airline', 'Source Airport', 'Destination Airport', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']
+    st.write(table_data)
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
@@ -158,6 +167,7 @@ plot_routes(routes, source_filter, dest_filter)
 
 # Display the map in Streamlit
 folium_static(m)
+
 
 
 
