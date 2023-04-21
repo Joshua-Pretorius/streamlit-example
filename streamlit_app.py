@@ -163,8 +163,8 @@ def plot_airports(routes):
     # Loop through the airports and add markers to the feature group
     for index, row in routes.iterrows():
         # Get the airport coordinates and name
-        airport_coords = [row['Latitude'], row['Longitude']]
-        airport_name = row['Name']
+        airport_coords = [row['Source Latitude'], row['Source Longitude']]
+        airport_name = row['Name_x']
 
         # Add a plane icon for the airport
         icon_plane = folium.features.CustomIcon('https://img.icons8.com/emoji/48/000000/airplane-emoji.png', icon_size=(30, 30))
@@ -173,6 +173,8 @@ def plot_airports(routes):
 
     # Add the airport feature group to the map
     airport_fg.add_to(m)
+
+   
 
 # Plot the airport markers on the map
 plot_airports(routes)
