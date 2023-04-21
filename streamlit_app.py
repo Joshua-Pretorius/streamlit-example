@@ -54,8 +54,7 @@ routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
 st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide", initial_sidebar_state = 'expanded')
 
 ##style - Custom styles from styles.css
-st.header("Airline Data")
-st.write(airlines)
+
 st.subheader("Airline Count by Country")
 airline_counts = airlines.groupby("Country").size().reset_index(name="Count")
 fig1 = px.bar(airline_counts, x="Country", y="Count", color="Country", title="Airline Count by Country")
