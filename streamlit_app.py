@@ -1,4 +1,4 @@
-from collections import namedtuple
+from hppy import namedtuple
 import altair as alt
 import math
 import pandas as pd
