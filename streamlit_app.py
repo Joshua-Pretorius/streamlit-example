@@ -157,10 +157,7 @@ def plot_routes(routes, source_filter, dest_filter):
     st.write(table_data)
 
 
-   
 
-# Plot the airport markers on the map
-plot_airports(routes)
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
