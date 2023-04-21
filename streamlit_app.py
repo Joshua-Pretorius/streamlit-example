@@ -90,7 +90,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from folium import plugins
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 
 # Clean the lattitude data
 join['Source Latitude'] = join['Source Latitude'].dropna().astype(float)
@@ -138,7 +138,8 @@ if airline_filter == 'All':
 plot_routes(routes, airline_filter)
 
 # Display the map in Streamlit
-folium_static(m)
+st_data = st_folium(m, width = 725)
+
 
 
 
