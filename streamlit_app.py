@@ -169,6 +169,10 @@ folium_static(m)
 
 
 
-
+# Create dropdown menus to select the source and destination airports
+source_list = routes['Name_x'].unique().tolist()
+source_filter = st.sidebar.selectbox('Select source airport:', source_list)
+dest_list = routes['Name_y'][routes['Name_x'] == source_filter].unique().tolist()
+dest_filter = st.sidebar.selectbox('Select destination airport:', dest_list)
 
 
