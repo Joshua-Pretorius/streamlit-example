@@ -172,7 +172,9 @@ plot_routes(routes, source_filter, dest_filter)
 folium_static(m)
 
 ### Display the distance between the two selected points
-
+## find coordinates
+source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
+dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
 # Calculate the distance between the coordinates using the Haversine formula
 lat1, lon1 = source_coords
 lat2, lon2 = dest_coords
