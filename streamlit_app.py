@@ -176,10 +176,6 @@ folium_static(m)
 
 ### Display the distance between the two selected points
 
-# Get the selected airports' coordinates
-source_coords = join.loc[join['Source airport'] == source_airport][['Source Latitude', 'Source Longitude']].iloc[0]
-dest_coords = join.loc[(join['Source airport'] == source_airport) & (join['Destination airport'] == destination_airport)][['Destination Latitude', 'Destination Longitude']].iloc[0]
-
 # Calculate the distance between the coordinates using the Haversine formula
 lat1, lon1 = source_coords
 lat2, lon2 = dest_coords
@@ -191,7 +187,7 @@ c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 distance = R * c
 
 # Display the distance between the selected airports
-st.write(f"The distance between {source_airport} and {destination_airport} is {distance:.2f} kilometers.")
+st.write(f"The distance between {source_airport} and {dest_airport} is {distance:.2f} kilometers.")
 
 
 
