@@ -177,6 +177,12 @@ def plot_routes(routes, source_filter, dest_filter):
     ##display the distance between the airports
 
     st.write(f"The distance between {source_airport} and {dest_airport} is {distance:.2f} kilometers. \n\nThe coordinates of {source_airport} is {source_coords} and {dest_airport} is {dest_coords}")
+    
+    ## Calculate the time it would take to travel 
+    time = distance/800
+    
+    #display time taken
+    st.write(f"The average time time taken to travel this route is: {time} ")
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
