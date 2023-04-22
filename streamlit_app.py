@@ -219,7 +219,7 @@ routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
 # Create a slider for selecting minimum distance
 st.write('## The lenght of routes')
 with st.beta_container():
-    min_distance = st.slider("Minimum flight distance (km)", min_value=0, max_value=19000, step=200, value=200, width=600)
+    min_distance = st.slider("Minimum flight distance (km)", min_value=0, max_value=19000, step=200, value=200)
     st.write("The minimum distance selected is:", min_distance, "km")
 # Filter routes by distance
 filtered_routes = routes[routes['Distance (km)'] >= min_distance]
