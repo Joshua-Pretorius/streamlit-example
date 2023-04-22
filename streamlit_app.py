@@ -255,7 +255,7 @@ bin_size = 20
 
 # Create the histogram
 fig = px.histogram(airports_df, x='Altitude', nbins=int((max_altitude-min_altitude)/bin_size), range_x=(min_altitude, max_altitude), labels={'Altitude': 'Altitude (ft)', 'count': 'Number of airports'})
-fig.update_layout(title='Number of Airports vs Altitude Range', xaxis_title='Altitude Range (ft)', yaxis_title='Number of Airports')
+fig.update_layout(title='Number of airports in an Altitude Range', xaxis_title='Altitude Range (ft)', yaxis_title='Number of Airports')
 st.plotly_chart(fig)
 
 
