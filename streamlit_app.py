@@ -137,8 +137,8 @@ def plot_routes(routes, source_filter, dest_filter):
     route_fg.add_to(m)
 
     # Add markers for the source and destination airports
-    source_airport = routes.iloc[0]['Name_x']
-    dest_airport = routes.iloc[0]['Name_y']
+    source_airport = routes.iloc['Name_x']
+    dest_airport = routes.iloc['Name_y']
     source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
     dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
     folium.Marker(location=source_coords, tooltip=source_airport).add_to(m)
@@ -173,13 +173,13 @@ folium_static(m)
 
 ### Display the distance between the two selected points
 ## find coordinates
-source_airport = routes.iloc[0]['Name_x']
-dest_airport = routes.iloc[0]['Name_y']
-source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
-dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
+fromAirport = routes['Source Latitude'[routes['Name_x'] == source_filter], routes['Source Longitude'[routes['Name_x'] == source_filter]
+toAirport = routes['Destination Latitude'[routes['Name_y'] == dest_filter], routes['Destination Longitude'[routes['Name_y'] == dest_filter]
+#source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
+#dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
 # Calculate the distance between the coordinates using the Haversine formula
-lat1, lon1 = source_coords
-lat2, lon2 = dest_coords
+lat1, lon1 = fromAirport
+lat2, lon2 = toAirport
 R = 6371  # radius of the Earth in kilometers
 dlat = math.radians(lat2 - lat1)
 dlon = math.radians(lon2 - lon1)
@@ -192,9 +192,6 @@ st.write(f"The distance between {source_filter} and {dest_filter} is {distance:.
 
 
 
-# Create dropdown boxes
-#source_airport = st.selectbox('From:', join['Source airport'].unique())
-#destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == source_airport]['Destination airport'].unique())
 
 
 
