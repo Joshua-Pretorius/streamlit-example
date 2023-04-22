@@ -55,10 +55,25 @@ st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layou
 
 ##style - Custom styles from styles.css
 
-st.subheader("Airline Count by Country")
-airline_counts = airlines.groupby("Country").size().reset_index(name="Count")
-fig1 = px.bar(airline_counts, x="Country", y="Count", color="Country", title="Airline Count by Country")
-st.plotly_chart(fig1, theme = 'streamlit')
+st.subheader("Airport Count: Top Ten Countries")
+# Count the number of times each country appears in the data frame
+country_counts = airports.groupby('Country').size().reset_index(name='Count')
+# Sort the counts in descending order and take the top ten
+top_countries = country_counts.sort_values('Count', ascending=False).head(10)
+
+# Plot the top ten countries as a bar graph
+chart = alt.Chart(top_countries).mark_bar().encode(
+    x=alt.X('Country', sort='-y'),
+    y='Count',
+    color='Country'
+).properties(
+    width=500,
+    height=300,
+    title='Top Ten Countries by Airport Count'
+)
+
+# Display the chart in Streamlit
+st.altair_chart(chart)
 
 import streamlit as st
 import pandas as pd
