@@ -220,6 +220,35 @@ with col2:
     st.write('## The 10 Lowest Airports')
     st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+
+# Load the data
+routes_df = pd.read_csv('routes.dat', header=None)
+routes_df.columns = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
+airports_df = pd.read_csv('airports.dat', header=None)
+airports_df.columns = ['Airport ID', 'Name', 'City', 'Country', 'IATA', 'ICAO', 'Latitude', 'Longitude', 'Altitude', 'Timezone', 'DST', 'Tz database time zone', 'Type', 'Source']
+
+# Filter and merge the data
+valid_airports = airports_df[airports_df['Altitude'].notnull()]
+valid_routes = routes_df[(routes_df['Source airport ID'].isin(valid_airports['Airport ID'])) & (routes_df['Destination airport ID'].isin(valid_airports['Airport ID']))]
+valid_routes_with_altitude = pd.merge(valid_routes, valid_airports[['Airport ID', 'Altitude']], how='inner', left_on='Source airport ID', right_on='Airport ID')
+valid_routes_with_altitude = valid_routes_with_altitude.rename(columns={'Altitude': 'Source altitude'})
+valid_routes_with_altitude = pd.merge(valid_routes_with_altitude, valid_airports[['Airport ID', 'Altitude']], how='inner', left_on='Destination airport ID', right_on='Airport ID')
+valid_routes_with_altitude = valid_routes_with_altitude.rename(columns={'Altitude': 'Destination altitude'})
+
+# Compute the altitude range
+min_altitude = -1266
+max_altitude = 12426
+
+# Create the histogram
+fig = px.histogram(valid_routes_with_altitude, x='Source altitude', nbins=(max_altitude - min_altitude + 1), range_x=(min_altitude, max_altitude), labels={'Source altitude': 'Altitude (ft)', 'count': 'Number of routes'})
+fig.update_layout(title='Number of routes vs altitude', xaxis_title='Altitude (ft)', yaxis_title='Number of routes')
+st.plotly_chart(fig)
+
+
 
 #SLIDER
 import pandas as pd
