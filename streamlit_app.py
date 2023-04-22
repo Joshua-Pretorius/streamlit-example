@@ -175,7 +175,7 @@ def plot_routes(routes, source_filter, dest_filter):
     distance = 6371 * c  # Earth's radius in kilometers
     
     ##display the distance between the airports
-    st.write(f"The distance between {source_airports} and {dest_airports} is {distance:.2f} kilometers. and {source_coords} and {dest_coords}")
+    st.write(f"The distance between {source_airport} and {dest_airport} is {distance:.2f} kilometers. and {source_coords} and {dest_coords}")
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
