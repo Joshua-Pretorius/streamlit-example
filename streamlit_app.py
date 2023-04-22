@@ -189,7 +189,7 @@ def plot_routes(routes, source_filter, dest_filter):
         if hours == 1:
             print(f"Travel time: {hours} hour and {minutes} minutes")
         else:
-            print(f"Travel time: {hours} hours and {minutes} minutes"}
+            print(f"Travel time: {hours} hours and {minutes} minutes")
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
