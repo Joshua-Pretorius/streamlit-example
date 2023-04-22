@@ -250,7 +250,7 @@ airports_df.columns = airport_col
 # Define the altitude range and bin size
 min_altitude = -1266
 max_altitude = 1242
-bin_size = 100
+bin_size = 20
 
 # Create the histogram
 fig = px.histogram(airports_df, x='Altitude', nbins=int((max_altitude-min_altitude)/bin_size), range_x=(min_altitude, max_altitude), labels={'Altitude': 'Altitude (ft)', 'count': 'Number of airports'})
