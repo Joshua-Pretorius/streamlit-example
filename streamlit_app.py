@@ -190,7 +190,7 @@ plot_routes(routes, source_filter, dest_filter)
 # Display the map in Streamlit
 folium_static(m)
 
-################################MOVE WHEN DIST IS GOOD######################################
+#TABLES
 #Show a two tables for the highest and the lowest airports according to altitude. 
 airports = airports.sort_values('Altitude')
 
@@ -202,7 +202,7 @@ st.write('## The 10 Lowest Airports')
 st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
 
-###################################SLIDER?????##############################################
+#SLIDER
 import pandas as pd
 import streamlit as st
 
@@ -217,7 +217,7 @@ def compute_distance(row):
 routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
 
 # Create a slider for selecting minimum distance
-st.write('## The lenght of routes')
+st.write('## The length of routes')
 with st.beta_container():
     min_distance = st.slider("Minimum flight distance (km)", min_value=0, max_value=19000, step=200, value=200)
     st.write("The minimum distance selected is:", min_distance, "km")
