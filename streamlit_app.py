@@ -185,23 +185,18 @@ st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(
 import pandas as pd
 import streamlit as st
 
-# Load routes data
-routes = pd.read_csv('routes.dat', header=None)
-route_col = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
-routes.columns = route_col
-
 # Compute distance for each route
 from geopy.distance import great_circle
 
 def compute_distance(row):
-    src = (row['Source airport latitude'], row['Source airport longitude'])
-    dest = (row['Destination airport latitude'], row['Destination airport longitude'])
+    src = (row['Source Latitude'], row['Source Longitude'])
+    dest = (row['Destination Latitude'], row['Destination Longitude'])
     return great_circle(src, dest).km
 
 routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
 
 # Create a slider for selecting minimum distance
-min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=40000, step=1000, value=5000)
+min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=(90000, step=1000, value=5000)
 
 # Filter routes by distance
 filtered_routes = routes[routes['Distance (km)'] >= min_distance]
