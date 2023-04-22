@@ -155,9 +155,29 @@ def plot_routes(routes, source_filter, dest_filter):
     table_data = routes[['Name_x', 'Name_y', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']]
     table_data.columns = ['Source Airport', 'Destination Airport', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']
     st.write(table_data)
+# Define a function to plot the airport markers on the map
+def plot_airports(routes):
+    # Create a feature group for the airports
+    airport_fg = folium.FeatureGroup(name='Airports')
 
+    # Loop through the airports and add markers to the feature group
+    for index, row in routes.iterrows():
+        # Get the airport coordinates and name
+        airport_coords = [row['Source Latitude'], row['Source Longitude']]
+        airport_name = row['Name_x']
 
+        # Add a plane icon for the airport
+        icon_plane = folium.features.CustomIcon('https://img.icons8.com/emoji/48/000000/airplane-emoji.png', icon_size=(30, 30))
+        marker = folium.Marker(location=airport_coords, icon=icon_plane, tooltip=airport_name)
+        marker.add_to(airport_fg)
 
+    # Add the airport feature group to the map
+    airport_fg.add_to(m)
+
+   
+
+# Plot the airport markers on the map
+plot_airports(routes)
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
@@ -172,14 +192,14 @@ plot_routes(routes, source_filter, dest_filter)
 folium_static(m)
 
 ### Display the distance between the two selected points
-## find coordinates
-fromAirport = routes['Source Latitude'[routes['Name_x'] == source_filter], routes['Source Longitude'[routes['Name_x'] == source_filter]
-toAirport = routes['Destination Latitude'[routes['Name_y'] == dest_filter], routes['Destination Longitude'[routes['Name_y'] == dest_filter]
-#source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
-#dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
+
+# Get the selected airports' coordinates
+source_coords = join.loc[join['Source airport'] == source_airport][['Source Latitude', 'Source Longitude']].iloc[0]
+dest_coords = join.loc[(join['Source airport'] == source_airport) & (join['Destination airport'] == destination_airport)][['Destination Latitude', 'Destination Longitude']].iloc[0]
+
 # Calculate the distance between the coordinates using the Haversine formula
-lat1, lon1 = fromAirport
-lat2, lon2 = toAirport
+lat1, lon1 = source_coords
+lat2, lon2 = dest_coords
 R = 6371  # radius of the Earth in kilometers
 dlat = math.radians(lat2 - lat1)
 dlon = math.radians(lon2 - lon1)
@@ -188,9 +208,13 @@ c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 distance = R * c
 
 # Display the distance between the selected airports
-st.write(f"The distance between {source_filter} and {dest_filter} is {distance:.2f} kilometers. and {source_coords} and {dest_coords}")
+st.write(f"The distance between {source_airport} and {destination_airport} is {distance:.2f} kilometers.")
 
 
+
+# Create dropdown boxes
+#source_airport = st.selectbox('From:', join['Source airport'].unique())
+#destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == source_airport]['Destination airport'].unique())
 
 
 
