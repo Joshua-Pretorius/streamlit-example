@@ -5,6 +5,12 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import pandas as pd
+import folium
+import numpy as np
+from streamlit_folium import folium_static
+from folium import plugins
+from streamlit_folium import st_folium
+
 
 ###Cleaning data
 
@@ -78,39 +84,24 @@ chart = alt.Chart(top_countries).mark_bar().encode(
 # Display the chart in Streamlit
 st.altair_chart(chart)
 
-import streamlit as st
-import pandas as pd
-import folium
-import numpy as np
-
-
-###MAP
+st.write('## The routes avaliable for your selected depature and arrival')
+#MAP
 ## Joining tables
 # Convert the Airport ID's to string for the join
 airports['Airport ID'] = airports['Airport ID'].astype(str)
 routes['Source airport ID'] = routes['Source airport ID'].astype(str)
 routes['Destination airport ID'] = routes['Destination airport ID'].astype(str)
-
-
-
 # Join the airports table twice to the routes table
 source_airport_info = airports[['Airport ID','Name' ,'Latitude', 'Longitude']]
 source_airport_info.columns = ['Source airport ID','Name', 'Source Latitude', 'Source Longitude']
 
-
 destination_airport_info = airports[['Airport ID','Name', 'Latitude', 'Longitude']]
 destination_airport_info.columns = ['Destination airport ID','Name', 'Destination Latitude', 'Destination Longitude']
-
 
 joined_table = pd.merge(routes, source_airport_info, on='Source airport ID', how='left')
 join = pd.merge(joined_table, destination_airport_info, on='Destination airport ID', how='left')
 
 ##inintialize map
-import streamlit as st
-import pandas as pd
-import folium
-from folium import plugins
-from streamlit_folium import st_folium
 
 # Clean the lattitude data
 join['Source Latitude'] = join['Source Latitude'].dropna().astype(float)
@@ -119,11 +110,6 @@ join['Destination Latitude'] = join['Destination Latitude'].dropna().astype(floa
 join['Destination Longitude'] = join['Destination Longitude'].dropna().astype(float)
 # Load the joined table
 join = join.dropna()
-##New map
-import pandas as pd
-import folium
-from streamlit_folium import folium_static
-import streamlit as st
 
 # Load the joined table
 join['Source airport ID'] = join['Source airport ID'].astype(str)
@@ -239,9 +225,6 @@ with col2:
     st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
 #Histogram
-import pandas as pd
-import plotly.express as px
-import streamlit as st
 
 # Load the data
 airports_df = pd.read_csv('airports.dat', header=None)
@@ -261,9 +244,6 @@ st.plotly_chart(fig)
 
 
 #SLIDER
-import pandas as pd
-import streamlit as st
-
 # Compute distance for each route
 from geopy.distance import great_circle
 
@@ -289,12 +269,6 @@ st.info(f"There are {len(filtered_routes)} routes with a distance of at least {m
 
 
 
-
-
-
-# Create dropdown boxes
-#source_airport = st.selectbox('From:', join['Source airport'].unique())
-#destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == source_airport]['Destination airport'].unique())
 
 
 
