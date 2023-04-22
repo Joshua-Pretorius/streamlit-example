@@ -207,12 +207,18 @@ folium_static(m)
 #Show a two tables for the highest and the lowest airports according to altitude. 
 airports = airports.sort_values('Altitude')
 
-# Create two tables, one for the top 10 highest airports and one for the bottom 10 lowest airports
-st.write('## Top 10 Highest Airports')
-st.table(airports[['Name', 'City', 'Country', 'Altitude']].tail(10).reset_index(drop=True))
+# Set page layout to 2 columns
+col1, col2 = st.beta_columns(2)
 
-st.write('## The 10 Lowest Airports')
-st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
+# Show the top 10 highest airports in the left column
+with col1:
+    st.write('## Top 10 Highest Airports')
+    st.table(airports[['Name', 'City', 'Country', 'Altitude']].tail(10).reset_index(drop=True))
+
+# Show the top 10 lowest airports in the right column
+with col2:
+    st.write('## The 10 Lowest Airports')
+    st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
 
 #SLIDER
