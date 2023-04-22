@@ -84,7 +84,7 @@ chart = alt.Chart(top_countries).mark_bar().encode(
 # Display the chart in Streamlit
 st.altair_chart(chart)
 
-st.write('## The routes avaliable for your selected depature and arrival')
+st.write('# The routes avaliable for your selected depature and arrival')
 #MAP
 ## Joining tables
 # Convert the Airport ID's to string for the join
