@@ -137,8 +137,8 @@ def plot_routes(routes, source_filter, dest_filter):
     route_fg.add_to(m)
 
     # Add markers for the source and destination airports
-    source_airport = routes.iloc['Name_x']
-    dest_airport = routes.iloc['Name_y']
+    source_airport = routes.iloc[0]['Name_x']
+    dest_airport = routes.iloc[0]['Name_y']
     source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
     dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
     folium.Marker(location=source_coords, tooltip=source_airport).add_to(m)
