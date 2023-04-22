@@ -177,6 +177,19 @@ def plot_routes(routes, source_filter, dest_filter):
     ##display the distance between the airports
 
     st.write(f"The distance between {source_airport} and {dest_airport} is {distance:.2f} kilometers. \n\nThe coordinates of {source_airport} is {source_coords} and {dest_airport} is {dest_coords}")
+    
+    ## Calculate the time it would take to travel 
+    time = distance/800
+    if time<1:
+        minutes = int(time*60)
+        print(f"Travel time {minutes} minutes")
+    else:
+        hours = int(time)
+        minutes = int((time - hours)*60)
+            if hours == 1:
+                print(f"Travel time: {hours} hour and {minutes} minutes")
+            else:
+                print(f"Travel time: {hours} hours and {minutes} minutes"}
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
