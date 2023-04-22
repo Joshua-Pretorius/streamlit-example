@@ -169,6 +169,50 @@ plot_routes(routes, source_filter, dest_filter)
 # Display the map in Streamlit
 folium_static(m)
 
+################################MOVE WHEN DIST IS GOOD######################################
+#Show a two tables for the highest and the lowest airports according to altitude. 
+airports = airports.sort_values('Altitude')
+
+# Create two tables, one for the top 10 highest airports and one for the bottom 10 lowest airports
+st.write('## Top 10 Highest Airports')
+st.table(airports[['Name', 'City', 'Country', 'Altitude']].tail(10).reset_index(drop=True))
+
+st.write('## The 10 Lowest Airports')
+st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
+
+
+###################################SLIDER?????##############################################
+import pandas as pd
+import streamlit as st
+
+# Load routes data
+routes = pd.read_csv('routes.dat', header=None)
+route_col = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
+routes.columns = route_col
+
+# Compute distance for each route
+from geopy.distance import great_circle
+
+def compute_distance(row):
+    src = (row['Source airport latitude'], row['Source airport longitude'])
+    dest = (row['Destination airport latitude'], row['Destination airport longitude'])
+    return great_circle(src, dest).km
+
+routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
+
+# Create a slider for selecting minimum distance
+min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=40000, step=1000, value=5000)
+
+# Filter routes by distance
+filtered_routes = routes[routes['Distance (km)'] >= min_distance]
+
+# Display the number of routes that meet the criteria
+st.write(f"There are {len(filtered_routes)} routes with a distance of at least {min_distance} km.")
+########################################################################################################################################
+
+
+
+
 ### Display the distance between the two selected points
 
 from math import sin, cos, sqrt, atan2, radians
@@ -196,23 +240,6 @@ def distance_between_airports(origin_airport, destination_airport):
 distance = distance_between_airports(origin_airport, destination_airport)
 st.write(f"The distance between {origin_airport['name']} and {destination_airport['name']} is {distance:.2f} kilometers.")
 
-
-
-
-
-
-
-
-
-#Show a two tables for the highest and the lowest airports according to altitude. 
-airports = airports.sort_values('Altitude')
-
-# Create two tables, one for the top 10 highest airports and one for the bottom 10 lowest airports
-st.write('## Top 10 Highest Airports')
-st.table(airports[['Name', 'City', 'Country', 'Altitude']].tail(10).reset_index(drop=True))
-
-st.write('## The 10 Lowest Airports')
-st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
 # Create dropdown boxes
 #source_airport = st.selectbox('From:', join['Source airport'].unique())
