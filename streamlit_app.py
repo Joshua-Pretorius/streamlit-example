@@ -171,21 +171,36 @@ folium_static(m)
 
 ### Display the distance between the two selected points
 
-# Get the selected airports' coordinates
-source_coords = [routes.iloc[0]['Source Latitude'], routes.iloc[0]['Source Longitude']]
-dest_coords = [routes.iloc[0]['Destination Latitude'], routes.iloc[0]['Destination Longitude']]
-# Calculate the distance between the coordinates using the Haversine formula
-lat1, lon1 = source_coords
-lat2, lon2 = dest_coords
-R = 6371  # radius of the Earth in kilometers
-dlat = math.radians(lat2 - lat1)
-dlon = math.radians(lon2 - lon1)
-a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
-c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-distance = R * c
+from math import sin, cos, sqrt, atan2, radians
 
-# Display the distance between the selected airports
-st.write(f"The distance between {source_airport} and {destination_airport} is {distance:.2f} kilometers.")
+def distance_between_airports(origin_airport, destination_airport):
+    # Define the latitude and longitude coordinates for the origin and destination airports
+    lat1, lon1 = origin_airport['latitude_deg'], origin_airport['longitude_deg']
+    lat2, lon2 = destination_airport['latitude_deg'], destination_airport['longitude_deg']
+    
+    # Convert degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    
+    # Calculate the differences between the latitudes and longitudes
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    
+    # Calculate the distance using the Haversine formula
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    distance = 6371 * c  # Earth's radius in kilometers
+    
+    return distance
+
+#display the distance between the two selected airports
+distance = distance_between_airports(origin_airport, destination_airport)
+st.write(f"The distance between {origin_airport['name']} and {destination_airport['name']} is {distance:.2f} kilometers.")
+
+
+
+
+
+
 
 
 
