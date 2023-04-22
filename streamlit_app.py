@@ -237,6 +237,25 @@ with col2:
     st.write('## The 10 Lowest Airports')
     st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
 
+#Histogram
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+# Load the data
+airports_df = pd.read_csv('airports.dat', header=None)
+airport_col = ['Airport ID', 'Name', 'City', 'Country', 'IATA', 'ICAO', 'Latitude', 'Longitude', 'Altitude', 'Timezone', 'DST', 'Tz database time zone', 'Type', 'Source']
+airports_df.columns = airport_col
+
+# Define the altitude range and bin size
+min_altitude = -1266
+max_altitude = 1242
+bin_size = 300
+
+# Create the histogram
+fig = px.histogram(airports_df, x='Altitude', nbins=int((max_altitude-min_altitude)/bin_size), range_x=(min_altitude, max_altitude), labels={'Altitude': 'Altitude (ft)', 'count': 'Number of airports'})
+fig.update_layout(title='Number of Airports vs Altitude Range', xaxis_title='Altitude Range (ft)', yaxis_title='Number of Airports')
+st.plotly_chart(fig)
 
 
 
