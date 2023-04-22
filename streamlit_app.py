@@ -175,6 +175,7 @@ def plot_routes(routes, source_filter, dest_filter):
     distance = 6371 * c  # Earth's radius in kilometers
     
     ##display the distance between the airports
+
     st.write(f"The distance between {source_airport} and {dest_airport} is {distance:.2f} kilometers. \n\nThe coordinates of {source_airport} is {source_coords} and {dest_airport} is {dest_coords}")
 
 # Create dropdown menus to select the source and destination airports
@@ -216,13 +217,17 @@ def compute_distance(row):
 routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
 
 # Create a slider for selecting minimum distance
-min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=90000, step=1000, value=5000)
 
+min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=19000, step=200, value=400)
+with st.beta_container():
+    min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=100000, step=1000, value=5000)
+    st.write("The minimum distance selected is:", min_distance, "km")
 # Filter routes by distance
 filtered_routes = routes[routes['Distance (km)'] >= min_distance]
 
 # Display the number of routes that meet the criteria
 st.write(f"There are {len(filtered_routes)} routes with a distance of at least {min_distance} km.")
+
 ########################################################################################################################################
 
 
