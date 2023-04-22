@@ -69,7 +69,7 @@ chart = alt.Chart(top_countries).mark_bar().encode(
 ).properties(
     width=500,
     height=300,
-    title='Top Ten Countries by Airport Count'
+    title='Airport count in the 10 most populated countries'
 )
 
 # Display the chart in Streamlit
