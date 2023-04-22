@@ -219,7 +219,7 @@ with col1:
 with col2:
     st.write('## The 10 Lowest Airports')
     st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
-
+##Histogram
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -244,7 +244,7 @@ min_altitude = -1266
 max_altitude = 12426
 
 # Create the histogram
-fig = px.histogram(valid_routes_with_altitude, x='Source altitude', nbins=(max_altitude - min_altitude + 1), range_x=(min_altitude, max_altitude), labels={'Source altitude': 'Altitude (ft)', 'count': 'Number of routes'})
+fig = px.histogram(valid_routes_with_altitude, x='Source altitude', nbins=int((max_altitude - min_altitude) / 1000), range_x=(min_altitude, max_altitude), labels={'Source altitude': 'Altitude (ft)', 'count': 'Number of routes'})
 fig.update_layout(title='Number of routes vs altitude', xaxis_title='Altitude (ft)', yaxis_title='Number of routes')
 st.plotly_chart(fig)
 
