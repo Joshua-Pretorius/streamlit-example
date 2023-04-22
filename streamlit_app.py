@@ -53,7 +53,8 @@ routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
 # create the web application using streamlit
 st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide", initial_sidebar_state = 'expanded')
 
-##style - Custom styles from styles.css
+##style - Image and title
+st.title("AVATION DASHBOARD")
 image_url = "https://i2.pickpik.com/photos/551/769/133/sunset-airplane-silhouette-flying-preview.jpg"
 st.image(image_url, caption = "FLY@GIS311")
 st.warning("WARNING!!!:\n\nUsing this dashboard may cause a sudden increase in your aviation knowledge and a strong desire to book a one-way ticket to your dream destination. Use at your own risk!")
