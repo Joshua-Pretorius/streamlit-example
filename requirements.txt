@@ -7,3 +7,4 @@ pandas
 folium
 numpy
 streamlit-folium
+geopy
