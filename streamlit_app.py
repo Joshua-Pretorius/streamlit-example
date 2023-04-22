@@ -196,7 +196,7 @@ def compute_distance(row):
 routes['Distance (km)'] = routes.apply(compute_distance, axis=1)
 
 # Create a slider for selecting minimum distance
-min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=(90000, step=1000, value=5000)
+min_distance = st.sidebar.slider("Minimum flight distance (km)", min_value=0, max_value=90000, step=1000, value=5000)
 
 # Filter routes by distance
 filtered_routes = routes[routes['Distance (km)'] >= min_distance]
