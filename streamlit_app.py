@@ -156,7 +156,27 @@ def plot_routes(routes, source_filter, dest_filter):
     table_data.columns = ['Source Airport', 'Destination Airport', 'Source Latitude', 'Source Longitude', 'Destination Latitude', 'Destination Longitude']
     st.write(table_data)
 
+    ## Distance between source airport and dest airports
+    from math import sin, cos, sqrt, atan2, radians
     
+    lat1, lon1 = source_coords
+    lat2, lon2 = dest_coords
+    
+      # Convert degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    
+    # Calculate the differences between the latitudes and longitudes
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    
+    # Calculate the distance using the Haversine formula
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    distance = 6371 * c  # Earth's radius in kilometers
+    
+    ##display the distance between the airports
+    st.write(f"The distance between {source_airports} and {dest_airports} is {distance:.2f} kilometers. and {source_coords} and {dest_coords}")
+
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
 source_filter = st.sidebar.selectbox('Select source airport:', source_list)
@@ -213,32 +233,6 @@ st.write(f"There are {len(filtered_routes)} routes with a distance of at least {
 
 
 
-### Display the distance between the two selected points
-
-from math import sin, cos, sqrt, atan2, radians
-
-def distance_between_airports(origin_airport, destination_airport):
-    # Define the latitude and longitude coordinates for the origin and destination airports
-    lat1, lon1 = origin_airport['latitude_deg'], origin_airport['longitude_deg']
-    lat2, lon2 = destination_airport['latitude_deg'], destination_airport['longitude_deg']
-    
-    # Convert degrees to radians
-    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
-    
-    # Calculate the differences between the latitudes and longitudes
-    dlat = lat2 - lat1
-    dlon = lon2 - lon1
-    
-    # Calculate the distance using the Haversine formula
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    distance = 6371 * c  # Earth's radius in kilometers
-    
-    return distance
-
-#display the distance between the two selected airports
-distance = distance_between_airports(origin_airport, destination_airport)
-st.write(f"The distance between {origin_airport['name']} and {destination_airport['name']} is {distance:.2f} kilometers.")
 
 
 # Create dropdown boxes
