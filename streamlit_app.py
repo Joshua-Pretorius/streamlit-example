@@ -189,6 +189,16 @@ st.write(f"The distance between {source_airport} and {destination_airport} is {d
 
 
 
+#Show a two tables for the highest and the lowest airports according to altitude. 
+airports = airports.sort_values('Altitude')
+
+# Create two tables, one for the top 10 highest airports and one for the bottom 10 lowest airports
+st.write('## Top 10 Highest Airports')
+st.table(airports[['Name', 'City', 'Country', 'Altitude']].tail(10).reset_index(drop=True))
+
+st.write('## The 10 Lowest Airports')
+st.table(airports[['Name', 'City', 'Country', 'Altitude']].head(10).reset_index(drop=True))
+
 # Create dropdown boxes
 #source_airport = st.selectbox('From:', join['Source airport'].unique())
 #destination_airport = st.selectbox('To:', join.loc[join['Source airport'] == source_airport]['Destination airport'].unique())
