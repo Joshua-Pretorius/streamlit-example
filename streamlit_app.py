@@ -54,7 +54,7 @@ routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
 st.set_page_config(page_title="OpenFlights Dashboard", page_icon="✈️", layout="wide", initial_sidebar_state = 'expanded')
 
 ##style - Custom styles from styles.css
-
+st.warning("WARNING!!!:\n\nUsing this dashboard may cause a sudden increase in your aviation knowledge and a strong desire to book a one-way ticket to your dream destination. Use at your own risk!")
 st.subheader("Airport Count: Top Ten Countries")
 # Count the number of times each country appears in the data frame
 country_counts = airports.groupby('Country').size().reset_index(name='Count')
