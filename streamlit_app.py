@@ -180,9 +180,17 @@ def plot_routes(routes, source_filter, dest_filter):
     
     ## Calculate the time it would take to travel 
     time = distance/800
+    if time<1:
+        minutes = int(time*60)
+        print(f"Travel time {minutes} minutes")
+    else:
+        hours = int(time)
+        minutes = int((time - hours)*60)
+            if hours == 1:
+                print(f"Travel time: {hours} hour and {minutes} minutes")
+            else:
+                print(f"Travel time: {hours} hours and {minutes} minutes"}
     
-    #display time taken
-    st.write(f"The average time time taken to travel this route is: {time} ")
 
 # Create dropdown menus to select the source and destination airports
 source_list = routes['Name_x'].unique().tolist()
