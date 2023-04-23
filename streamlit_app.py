@@ -41,7 +41,7 @@ airports['Longitude'] = airports['Longitude'].replace('\\N', np.nan).astype(floa
 countries = pd.read_csv('countries.dat', header=None)
 country_col = ['Name', 'ISO Code', 'DAFIF Code']
 countries.columns = country_col
-## r Clean Data Countries
+## Clean Data Countries
 #drop columns
 countries = countries.drop(['DAFIF Code'], axis = 1)
 
@@ -52,7 +52,7 @@ planes.columns = plane_col
 routes = pd.read_csv('routes.dat', header=None)
 route_col = ['Airline', 'Airline ID', 'Source airport', 'Source airport ID', 'Destination airport', 'Destination airport ID', 'Codeshare', 'Stops', 'Equipment']
 routes.columns = route_col
-#J-Drop uneccesary columns in the routes table
+#Drop uneccesary columns in the routes table
 routes = routes.drop(['Airline','Codeshare','Stops','Equipment'], axis=1)
 
 
