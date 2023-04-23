@@ -10,7 +10,7 @@ import numpy as np
 from streamlit_folium import folium_static
 from folium import plugins
 from streamlit_folium import st_folium
-
+from math import sin, cos, sqrt, atan2, radians
 
 ###Cleaning data
 
@@ -161,7 +161,6 @@ def plot_routes(routes, source_filter, dest_filter):
     st.write(table_data)
 
     ## Distance between source airport and dest airports
-    from math import sin, cos, sqrt, atan2, radians
     
     lat1, lon1 = source_coords
     lat2, lon2 = dest_coords
