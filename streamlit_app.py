@@ -33,8 +33,9 @@ airport_col = ['Airport ID', 'Name', 'City', 'Country', 'IATA', 'ICAO', 'Latitud
 airports.columns = airport_col
 #J-Drop uneccesary columns in the airports table
 airports = airports.drop(['DST','Tz database time zone','Type','Source','Timezone'], axis=1)
-#J-Replace missing values with NaN and convert to float
-import numpy as np
+
+#Replace missing values with NaN and convert to float
+
 airports['Latitude'] = airports['Latitude'].replace('\\N', np.nan).astype(float)
 airports['Longitude'] = airports['Longitude'].replace('\\N', np.nan).astype(float)
 
